@@ -11,11 +11,8 @@ app.get('/', function(req, res){
 })
 
 app.get('/aplicants', function (req, res) {
-  console.log('*******inside aplicants route')
   mongoUtil.getList('Aplicants', function (err, docs) {
-  	console.log('*******inside getList cb err=', err)
   	if(err) return res.status(417).send(err)
-  	console.log('*******inside aplicants get success')
   	res.status(200).json(docs)
   	return res.end()
   })

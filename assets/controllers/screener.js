@@ -1,9 +1,13 @@
-angular.module('jobPortal').controller('Screener', ['$http', '$sce', function ($http, $sce) {
+angular.module('jobPortal').controller('Screener', ['$http', function ($http) {
   this.currentCV = ""
   this.currentIndex = 0
+  var self = this
+  this.disableNext = false
+  this.disablePrev = true
 
   $http.get('/aplicants').success(function(data) {
     self.currentCV = data[0].resume
+    self.data = data
     var existingCV = $('#myFrame')
     if (existingCV) existingCV.remove()
     $('<iframe>', {
@@ -32,11 +36,39 @@ angular.module('jobPortal').controller('Screener', ['$http', '$sce', function ($
 
   this.next = function () {
   	this.currentIndex = this.currentIndex + 1
-    this.currentCV = $sce.trustAsResourceUrl(data[this.currentIndex].resume)
+    if (this.currentIndex >= 1) {
+      this.disablePrev = false 
+    } else {
+      this.disablePrev = true 
+    }
+    if (this.data.length === this.currentIndex) this.disableNext = true
+    this.currentCV = this.data[this.currentIndex].resume
+    var existingCV = $('#myFrame')
+    if (existingCV) existingCV.remove()
+    $('<iframe>', {
+      src: self.currentCV,
+      id:  'myFrame',
+      frameborder: 0,
+      scrolling: 'yes',
+      width:1000,
+      height: 500
+    }).prependTo('#screener')
   }
 
   this.prev = function () {
   	this.currentIndex = this.currentIndex - 1
-  	this.currentCV = $sce.trustAsResourceUrl(data[this.currentCV].resume)
+  	this.currentCV = this.data[this.currentIndex].resume
+    if (this.currentIndex !== this.data.length) this.disableNext = false
+    if (this.currentIndex === 0) this.disablePrev = true
+    var existingCV = $('#myFrame')
+    if (existingCV) existingCV.remove()
+    $('<iframe>', {
+      src: self.currentCV,
+      id:  'myFrame',
+      frameborder: 0,
+      scrolling: 'yes',
+      width:1000,
+      height: 500
+    }).prependTo('#screener')
   }
 }])

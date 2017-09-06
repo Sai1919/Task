@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 var Aplicant = require('../schemas/aplicant')
-var uri = "your local or mlab url"
+var uri = "mongodb://testing1:testing1@ds123351.mlab.com:23351/testing"
 exports.connect = function (cb) {
   mongoose.Promise = global.Promise
   mongoose.connect(uri, {useMongoClient: true}, function (err) {
@@ -16,7 +16,7 @@ exports.connect = function (cb) {
 
 exports.getList = function (collectionName, cb) {
   var model = getModel(collectionName)
-  if(!model) // if unknown model should properly write back error
+  if(!model) return // if unknown model should properly write back error
 
   model.find({}, function (err, docs) {
   	if (err) return cb(err)
