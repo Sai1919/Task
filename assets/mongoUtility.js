@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 var Aplicant = require('../schemas/aplicant')
-var uri = "mongodb://testing1:testing1@ds123351.mlab.com:23351/testing"
+var uri = "url"
 exports.connect = function (cb) {
   mongoose.Promise = global.Promise
   mongoose.connect(uri, {useMongoClient: true}, function (err) {
