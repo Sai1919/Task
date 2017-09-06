@@ -1,0 +1,65 @@
+<div ng-controller = "Apply as app">
+  <script type="text/javascript">
+    function onApiLoad() {
+      gapi.load('auth', {'callback': onAuthApiLoad});
+      gapi.load('picker');
+    }
+
+    function onAuthApiLoad() {
+      // sensitive
+      window.gapi.auth.authorize({
+        'client_id': '810234730834-d9h8to8c5ecik5p83sp2dntnf0bue06b.apps.googleusercontent.com',
+        'scope': ['https://www.googleapis.com/auth/drive']
+      }, handleAuthResult);
+    }
+
+    var oauthToken;
+    function handleAuthResult(authResult) {
+      if (authResult && !authResult.error) {
+        oauthToken = authResult.access_token;
+        createPicker();
+      }
+    }
+
+    function createPicker() {
+        window.picker = new google.picker.PickerBuilder()
+        .addView(new google.picker.DocsUploadView())
+        .addView(new google.picker.DocsView())
+        .setOAuthToken(oauthToken)
+        .setCallback(pickerCallback)
+        .build();
+    }
+
+    function showPicker () {
+      window.picker.setVisible(true)
+    }
+
+    function pickerCallback(data) {
+      var url = 'nothing';
+      if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+        var doc = data[google.picker.Response.DOCUMENTS][0];
+        url = doc[google.picker.Document.URL];
+      }
+      document.getElementById('link').value = url
+    }
+  </script>
+  <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  <form name="applyForm" novalidate ng-submit= "applyForm.$valid && app.submitApplication()">
+    <h4>Fill the form to apply</h4>
+    <div class= "form">
+    <input placeholder="Enter your name" required ng-model = "app.applicant.name">
+    </div>
+    <div class= "form">
+    <input placeholder="4325345388" required ng-model = "app.applicant.phone">
+    </div>
+    <div class= "form">
+    <input type = "button" required onclick = "showPicker()" value = "upload CV">
+    </div>
+    <div class= "form">
+    <input type="email" placeholder="jimmyDean@example.org" required ng-model = "app.applicant.email">
+    </div>
+    <div class= "form">
+    <input type="submit" class="btn btn-primary" value="Submit Review" />
+  	</div>
+  </form>
+</div>
