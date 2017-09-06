@@ -32,7 +32,7 @@ mongoUtil.connect(function () {
 })
 
 app.put('/applicant/:field', function (req, res) {
-  mongoUtil.update('Aplicants', req.body, field, function (err) {
+  mongoUtil.update('Aplicants', req.body, req.params.field, function (err) {
     if (err) return res.status(417).send(err)
     return res.end()
   })

@@ -15,14 +15,12 @@
       </thead>
       <tbody>
         <tr ng-repeat = "c in can.canditates">
-          <div ng-hide = "c.status==='Reject'">
           <td>{{c.name}}</td>
           <td>{{c.email}}</td>
           <td>{{c.phone}}</td>
           <td>{{c.status}}</td>
           <td>{{c.date | date: 'dd/MM/yyyy @ h:mma'}}</td>
           <td><a ng-href = {{c.resume}}>view</a></td>
-          </div>
         </tr>
       </tbody>
     </table>

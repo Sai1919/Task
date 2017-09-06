@@ -21,14 +21,16 @@ angular.module('jobPortal').controller('Screener', ['$http', function ($http) {
   })
 
   this.reject = function () {
-    $http.put("/applicant", JSON.stringify(data[this.currentIndex])).success(function (data) {
+    self.data[this.currentIndex].status = 'Rejected'
+    $http.put("/applicant/status", JSON.stringify(self.data[this.currentIndex])).success(function (data) {
       // need to properly handle not just logging
       console.log('updated successfully')
     })
   }
 
   this.accept = function () {
-    $http.put("/applicant", JSON.stringify(data[this.currentIndex])).success(function (data) {
+    self.data[this.currentIndex].status = 'Accepted'
+    $http.put("/applicant/status", JSON.stringify(self.data[this.currentIndex])).success(function (data) {
       // need to properly handle not just logging
       console.log('updated successfully')
     })

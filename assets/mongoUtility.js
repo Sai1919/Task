@@ -43,8 +43,9 @@ exports.save = function (collectionName, doc, cb) {
 
 exports.update = function (collectionName, doc, field, cb) {
   var Model = getModel(collectionName)
-  
-  model.update({_id: doc._id},  { $set: { field: doc.field }}, { multi: false }, function (err) {
+  var setObj = {}
+  setObj[field] = doc[field]
+  Model.update({_id: doc._id},  { $set: setObj}).exec(function (err, doc) {
     if (err) return cb(err)
     return cb()
   })
